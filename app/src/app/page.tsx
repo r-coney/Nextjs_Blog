@@ -1,15 +1,18 @@
-import Image from "next/image";
 import ArticleList from "./components/ArticleList";
 import { getAllArticles } from "@/blogApi";
+import { supabase } from "@/utils/supabaseClient";
 
 export default async function Home() {
-  const articles = await getAllArticles();
-  console.log(typeof articles);
+  // const articles = await getAllArticles();
+
+  const API_URL = process.env.NEXT_PUBLIC_API_URL;
+  const res = await fetch(`${API_URL}/api/blog`, { cache: "no-store" });
+  const articles = await res.json();
 
   return (
     <div className="md:flex">
       <section className="w-full md:w-2/3 flex flex-col items-center px-3">
-        <ArticleList articles={articles}/>
+        <ArticleList articles={articles} />
       </section>
 
       <aside className="w-full md:w-1/3 flex flex-col items-center px-3 md:pl-6">
